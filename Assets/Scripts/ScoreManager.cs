@@ -36,9 +36,7 @@ public class ScoreManager : MonoBehaviour
             WinGame();
         }
     }
-    void WinGame()
-    {
-    }
+
     void UpdateScoreText()
     {
         if (scoreText != null)
@@ -50,6 +48,16 @@ public class ScoreManager : MonoBehaviour
             Debug.LogError("Score Text is not assigned!");
         }
     }
-    
-    
+    public int GetScore()
+    {
+        return score;
+    }
+    public void ResetScore()
+    {
+        score = 0;
+    }
+    void WinGame()
+    {
+        SceneManager.LoadScene("WinningScene");
+    }
 }

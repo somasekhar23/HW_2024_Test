@@ -1,15 +1,14 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlaneManager : MonoBehaviour
 {
     public GameObject planePrefab;
-    private float minPulpitDestroyTime = 4f;
-    private float maxPulpitDestroyTime = 5f;
-    private float pulpitSpawnTime = 2.5f;
+    public float minPulpitDestroyTime = 4f;
+    public float maxPulpitDestroyTime = 5f;
+    public float pulpitSpawnTime = 2.5f;
     public GameObject player;
-    private float offset = 3.3f;
+    public float offset = 3.3f;
 
     private GameObject currentPlane;
     private GameObject nextPlane;
@@ -58,8 +57,11 @@ public class PlaneManager : MonoBehaviour
                 Destroy(currentPlane);
                 currentPlane = nextPlane;
             }
+
+            CheckGameOver();
         }
     }
+
     public void TriggerScore()
     {
         if (ScoreManager.instance != null)
@@ -72,6 +74,26 @@ public class PlaneManager : MonoBehaviour
         }
     }
 
+    void CheckGameOver()
+    {
+        if (player.transform.position.y < -3)
+        {
+            isGameOver = true;
+            Debug.Log("Game Over! The player has fallen.");
+
+            // Stop all coroutines and trigger the GameOver method in GameOverManager immediately
+            StopAllCoroutines();
+            FindObjectOfType<GameOverManager>().GameOver();
+        }
+    }
+
+    public void ResetGame()
+    {
+        isGameOver = false;
+        StopAllCoroutines();  // Stop any running coroutines
+        SpawnInitialPlane();
+        StartCoroutine(ManagePlanes());  // Restart the plane management coroutine
+    }
 
     Vector3 GetRandomPosition()
     {
