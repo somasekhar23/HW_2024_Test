@@ -60,12 +60,18 @@ public class PlaneManager : MonoBehaviour
             }
         }
     }
+    public void TriggerScore()
+    {
+        if (ScoreManager.instance != null)
+        {
+            ScoreManager.instance.AddScore();
+        }
+        else
+        {
+            Debug.LogError("ScoreManager instance is not available.");
+        }
+    }
 
-    
-
-    
-
-    
 
     Vector3 GetRandomPosition()
     {
